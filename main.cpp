@@ -3,40 +3,78 @@
 #include <cctype>
 
 using namespace std;
+
 void encrypt(string&, string&, string&);
 void decrypt(string&, string&, string&);
 char getEncryptedText(char p, char k);
 char getDecryptedText(char p, char k);
 string decryptionKey(string&, string&);
+string decryptMessage(string&, string&);
 
 int main() {
     string input;
     string key;
     string encryptedText;
     string decryptedText;
+    char choice;
 
-    cout << "Enter secret message: ";
-    getline(cin, input);
-    cout << "Enter key (longer than message): ";
-    getline(cin, key);
+    do {
+        cout << "\nOptions:" << endl;
+        cout << "1. Encrypt" << endl;
+        cout << "2. Decrypt" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    input.erase(remove_if(input.begin(), input.end(), ::isspace), input.end());
-    key.erase(remove_if(key.begin(), key.end(), ::isspace), key.end());
+        switch (choice) {
+            case '1':
+                cout << "Enter secret message: ";
+                cin.ignore(); // Clear the newline character from the input buffer
+                getline(cin, input);
+                cout << "Enter key (longer than message): ";
+                getline(cin, key);
 
-    if (key.length() < input.length()) {
-        cout << "The encryption key must be longer than the message." << endl;
-        return 1;
-    }
+                input.erase(remove_if(input.begin(), input.end(), ::isspace), input.end());
+                key.erase(remove_if(key.begin(), key.end(), ::isspace), key.end());
 
-    encrypt(input, key, encryptedText);
+                if (key.length() < input.length()) {
+                    cout << "The encryption key must be longer than the message." << endl;
+                    break;
+                }
 
-    cout << "\nThe encrypted text is:" << endl;
-    cout << encryptedText << endl;
+                encrypt(input, key, encryptedText);
+                cout << "\nThe encrypted text is:" << endl;
+                cout << encryptedText << endl;
+                break;
 
-    decrypt(encryptedText, key, decryptedText);
+            case '2':
+                cout << "Enter encrypted message: ";
+                cin.ignore(); // Clear the newline character from the input buffer
+                getline(cin, input);
+                cout << "Enter key: ";
+                getline(cin, key);
 
-    cout << "\nThe decrypted text is:" << endl;
-    cout << decryptedText << endl;
+                input.erase(remove_if(input.begin(), input.end(), ::isspace), input.end());
+                key.erase(remove_if(key.begin(), key.end(), ::isspace), key.end());
+
+                if (key.length() < input.length()) {
+                    cout << "The decryption key must be longer than the message." << endl;
+                    break;
+                }
+
+                decryptedText = decryptMessage(input, key);
+                cout << "\nThe decrypted text is:" << endl;
+                cout << decryptedText << endl;
+                break;
+
+            case '3':
+                cout << "Exiting the program." << endl;
+                break;
+
+            default:
+                cout << "Invalid choice. Please enter a valid option (1, 2, or 3)." << endl;
+        }
+    } while (choice != '3');
 
     return 0;
 }
@@ -77,4 +115,10 @@ string decryptionKey(string &key, string &encryptedText) {
         decryptedKey += key[i % key.length()];
     }
     return decryptedKey;
+}
+
+string decryptMessage(string &encryptedText, string &key) {
+    string decryptedText;
+    decrypt(encryptedText, key, decryptedText);
+    return decryptedText;
 }
