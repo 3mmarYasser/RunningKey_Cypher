@@ -243,6 +243,15 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
+CaesarCipher_BINARY_DIR:STATIC=C:/Users/entar/CLionProjects/untitled/cmake-build-debug
+
+//Value Computed by CMake
+CaesarCipher_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+CaesarCipher_SOURCE_DIR:STATIC=C:/Users/entar/CLionProjects/untitled
+
+//Value Computed by CMake
 untitled_BINARY_DIR:STATIC=C:/Users/entar/CLionProjects/untitled/cmake-build-debug
 
 //Value Computed by CMake

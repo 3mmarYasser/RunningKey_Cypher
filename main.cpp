@@ -29,12 +29,11 @@ int main() {
         switch (choice) {
             case '1':
                 cout << "Enter secret message: ";
-                cin.ignore(); // Clear the newline character from the input buffer
+                cin.ignore();
                 getline(cin, input);
                 cout << "Enter key (longer than message): ";
                 getline(cin, key);
 
-                input.erase(remove_if(input.begin(), input.end(), ::isspace), input.end());
                 key.erase(remove_if(key.begin(), key.end(), ::isspace), key.end());
 
                 if (key.length() < input.length()) {
@@ -54,7 +53,6 @@ int main() {
                 cout << "Enter key: ";
                 getline(cin, key);
 
-                input.erase(remove_if(input.begin(), input.end(), ::isspace), input.end());
                 key.erase(remove_if(key.begin(), key.end(), ::isspace), key.end());
 
                 if (key.length() < input.length()) {
@@ -81,9 +79,13 @@ int main() {
 
 void encrypt(string &input, string &key, string &encryptedText) {
     encryptedText = "";
+    size_t keyIndex = 0;
     for (size_t i = 0; i < input.length(); ++i) {
         if (isalpha(input[i])) {
-            encryptedText += getEncryptedText(tolower(input[i]), tolower(key[i % key.length()]));
+            encryptedText += getEncryptedText(tolower(input[i]), tolower(key[keyIndex % key.length()]));
+            keyIndex++;
+        } else {
+            encryptedText += input[i];
         }
     }
 }
@@ -95,9 +97,13 @@ char getEncryptedText(char p, char k) {
 void decrypt(string &encryptedText, string &key, string &decryptedText) {
     string decryptedKey = decryptionKey(key, encryptedText);
     decryptedText = "";
+    size_t keyIndex = 0;
     for (size_t i = 0; i < encryptedText.length(); ++i) {
         if (isalpha(encryptedText[i])) {
-            decryptedText += getDecryptedText(tolower(encryptedText[i]), tolower(decryptedKey[i]));
+            decryptedText += getDecryptedText(tolower(encryptedText[i]), tolower(decryptedKey[keyIndex % decryptedKey.length()]));
+            keyIndex++;
+        } else {
+            decryptedText += encryptedText[i];
         }
     }
 }
@@ -111,8 +117,12 @@ char getDecryptedText(char p, char k) {
 
 string decryptionKey(string &key, string &encryptedText) {
     string decryptedKey;
+    size_t keyIndex = 0;
     for (size_t i = 0; i < encryptedText.length(); ++i) {
-        decryptedKey += key[i % key.length()];
+        if (isalpha(encryptedText[i])) {
+            decryptedKey += key[keyIndex % key.length()];
+            keyIndex++;
+        }
     }
     return decryptedKey;
 }
